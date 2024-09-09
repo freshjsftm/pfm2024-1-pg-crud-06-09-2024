@@ -42,6 +42,12 @@ module.exports.getThingByPk = async (req, res, next) => {
 };
 module.exports.updateThingByPk = async (req, res, next) => {
   try {
+    const {body, params:{idThing}} = req;
+    const [updatedThing] = await Thing.updateByPk(idThing, body);
+    if (updatedThing) {
+      return res.status(200).send({ data: updatedThing });
+    }
+    return res.status(404).send(); //bad practice
   } catch (error) {
     next(error);
   }
