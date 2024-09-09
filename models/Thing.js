@@ -18,9 +18,11 @@ class Thing {
         return typeof value === 'string' ? `'${value}'` : value;
       })
       .join(',');
-    const { rows } = this.client.query(`
-      INSERT INTO ${this.tableName}(${strInsertAttrs}) VALUES(${strInsertValues});
-    `);
+    const {rows} = await this.client.query(`
+      INSERT INTO ${this.tableName}(${strInsertAttrs}) 
+      VALUES(${strInsertValues})
+      RETURNING *;
+    `); 
     return rows;
   }
 
